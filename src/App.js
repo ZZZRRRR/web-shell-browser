@@ -27,7 +27,6 @@ class App extends Component<IProps, IState> {
   componentDidMount() {
     this.resize()
     window.addEventListener('resize', this.resize);
-    this._init();
   }
 
   componentWillUnmount() {
@@ -64,7 +63,7 @@ class App extends Component<IProps, IState> {
   //初始化websocket连接
   initWS(param: { usrID: string, proID: number, exec: string }): Promise<{ websocket: WebSocket, event: MessageEvent }> {
     return fetch(
-      'http://192.168.130.134:80/open', {
+      'http://192.168.130.134:8081/open', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -74,7 +73,7 @@ class App extends Component<IProps, IState> {
       .then(res => res.json())
       .then(data => new Promise((resolve, reject) => {
         console.log('response', data);
-        const websocket = new WebSocket("ws://192.168.130.134:80/websocket")
+        const websocket = new WebSocket("ws://192.168.130.134:8081/websocket")
         websocket.onopen = () => {
           console.log('on ws open');
           websocket.send(data['token']);
@@ -126,8 +125,8 @@ class App extends Component<IProps, IState> {
   }
 
   exit(){
-    return fetch(
-      'http://192.168.130.134:80/exit', {
+    fetch(
+      'http://106.52.155.42:8081/exit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
